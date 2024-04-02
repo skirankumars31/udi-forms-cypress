@@ -6,7 +6,7 @@
     "cy:open:utv": "cypress open --e2e --env miljø=organa-utv --browser electron"
   },
   "devDependencies": {
-    "cypress": "13.7.1",
+    "cypress": "13.7.2",
     "@cypress/grep": "4.0.1",
     "cypress-mochawesome-reporter": "3.8.2",
     "cypress-ntlm-auth": "4.1.3",
