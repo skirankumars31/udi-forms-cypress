@@ -1,0 +1,16 @@
+{
+  "name": "udi-forms-cypress",
+  "description": "Cypress Automation å opprette UDI søknad",
+  "main": "index.js",
+  "scripts": {
+    "cy:open:utv": "cypress open --e2e --env miljø=organa-utv --browser electron"
+  },
+  "devDependencies": {
+    "cypress": "13.7.1",
+    "@cypress/grep": "4.0.1",
+    "cypress-mochawesome-reporter": "3.8.2",
+    "cypress-ntlm-auth": "4.1.3",
+    "prettier": "2.8.8",
+    "typescript": "5.4.3"
+  }
+}

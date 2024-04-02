@@ -1,0 +1,25 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Dependency directory
+node_modules
+
+# IDEs and editors
+/.idea
+/*.iml
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.http-mitm-proxy
+
+# cypress reports
+allure-results
+cypress/reports
+cypress/videos
+cypress/screenshots
