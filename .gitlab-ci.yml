@@ -7,8 +7,8 @@ variables:
     value: "organa-test"
     description: "Angi miljø(organa-utv, organa-test, liberty) autotest må kjøres mot."
 
-e2e:
-  image: hub.politiet.no/r2d2/cypress_included:13.7.1
+.e2e:
+  image: cypress/included:13.14.2
   stage: test
   resource_group: $CI_PROJECT_ID
   tags:
@@ -20,15 +20,15 @@ e2e:
     - npm install
     - CI_JOB_JWT="${CI_JOB_JWT}"  npm run cy:run:$MILJO
   artifacts:
-    name: Samtaleconfig-Artifacts
+    name: Test-Artifacts
     expire_in: 3 days
     when: always
     paths:
       - cypress/reports
       - cypress/screenshots
 
-pages:
-  image: hub.politiet.no/r2d2/cypress_included:13.7.1
+.pages:
+  image: cypress/included:13.14.2
   stage: pages
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
