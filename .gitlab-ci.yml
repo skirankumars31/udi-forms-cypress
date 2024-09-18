@@ -1,0 +1,42 @@
+stages:
+  - test
+  - pages
+
+variables:
+  MILJO:
+    value: "organa-test"
+    description: "Angi miljø(organa-utv, organa-test, liberty) autotest må kjøres mot."
+
+e2e:
+  image: hub.politiet.no/r2d2/cypress_included:13.7.1
+  stage: test
+  resource_group: $CI_PROJECT_ID
+  tags:
+    - test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - npm install
+    - CI_JOB_JWT="${CI_JOB_JWT}"  npm run cy:run:$MILJO
+  artifacts:
+    name: Samtaleconfig-Artifacts
+    expire_in: 3 days
+    when: always
+    paths:
+      - cypress/reports
+      - cypress/screenshots
+
+pages:
+  image: hub.politiet.no/r2d2/cypress_included:13.7.1
+  stage: pages
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - rm -rf public
+    - mkdir -p public
+    - cp -r cypress/reports/html/*.html public/index.html
+    - cp -r cypress/reports/html/videos public
+  artifacts:
+    paths:
+      - public
