@@ -9,7 +9,7 @@ export default {
   familyimmigration: () => cy.contains('h1', 'Family immigration'),
   previouspage: () => cy.contains('span', 'Previous page'),
   select_police_station: () => cy.contains('span', 'Oslo police district, Service Center for Foreign Workers').parent().find('input'),
-  nextpage: () => cy.contains('span', 'Next page'),
+  nextpage: () => cy.contains('button', 'Next page'),
   submit: () => cy.contains('button', 'Submit'),
   pay_submit: () => cy.contains('button', 'Pay and submit'),
   logout: () => cy.contains('span', 'Log out'),

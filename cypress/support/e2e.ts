@@ -14,7 +14,6 @@
 // ***********************************************************
 
 import './commands';
-import 'allure-cypress/commands';
 import 'cypress-mochawesome-reporter/register';
 // @ts-ignore
 import registerCypressGrep from '@cypress/grep';

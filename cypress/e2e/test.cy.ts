@@ -20,15 +20,17 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.familyimmigration().should('exist');
       selectors.saved().should('exist');
       selectors.nextpage().click();
-      //cy.pause();
     });
+
+    cy.pause();
 
     allure.step('Rights and duties', () => {
       selectors.bekreft().check();
       selectors.saved().should('exist');
       selectors.nextpage().click();
-      //cy.pause();
     });
+
+    cy.pause();
 
     allure.step('Two persons', () => {
       selectors.self_first_and_middlename().type('Testfam');
@@ -41,18 +43,20 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.family_member_country().type('Afghanistan').type('{downArrow}').type('{enter}');
       selectors.saved().should('exist');
       selectors.nextpage().click();
-      //cy.pause();
     });
+
+    cy.pause();
 
     allure.step('Family member in Norway', () => {
       selectors.family_member_dob().type('01.01.1990');
-      //selectors.family_member_identity_number().type('01019043256');
+      selectors.family_member_identity_number().type('01019043256');
       selectors.family_residence_permit_type().click();
       selectors.leve_sammen().click();
       selectors.saved().should('exist');
       selectors.nextpage().click();
-      //cy.pause();
     });
+
+    cy.pause();
 
     allure.step('your current situation', () => {
       selectors.residence_permit_in_another_country().click();
@@ -60,8 +64,9 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.who_delivers_documents().click();
       selectors.saved().should('exist');
       selectors.nextpage().click();
-      //cy.pause();
     });
+
+    cy.pause();
 
     allure.step('About you', () => {
       selectors.gender().click();
@@ -71,8 +76,9 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.children().click();
       selectors.saved().should('exist');
       selectors.nextpage().click();
-      //cy.pause();
     });
+
+    cy.pause();
 
     allure.step('Passport and ID', () => {
       selectors.passport_and_id().should('exist').click();
@@ -149,6 +155,8 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.saved().should('exist');
       selectors.pay_submit().should('exist').click();
     });
+
+    cy.pause();
 
     allure.step('Payment using card', () => {
       //cy.origin('https://test.checkout.dibspayment.eu/', () => {
