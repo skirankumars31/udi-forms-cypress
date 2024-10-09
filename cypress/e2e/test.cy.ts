@@ -23,6 +23,9 @@ describe('Sjekk bruker uten tilgang', function () {
     const family_last_name = faker.person.lastName();
     const self_email = faker.internet.email();
     const self_phone = fakerNB_NO.phone.number();
+    const norway_street_address = fakerNB_NO.location.streetAddress();
+    const norway_zipcode = fakerNB_NO.location.zipCode();
+    const norway_buildindNo = fakerNB_NO.location.buildingNumber();
 
     selectors.myapplications().should('exist');
     selectors.family().click();
@@ -33,15 +36,11 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.nextpage().click();
     });
 
-    cy.pause();
-
     allure.step('Rights and duties', () => {
       selectors.bekreft().check();
       selectors.saved().should('exist');
       selectors.nextpage().click();
     });
-
-    cy.pause();
 
     allure.step('Two persons', () => {
       selectors.self_first_and_middlename().type(self_first_name + ' ' + self_middle_name);
@@ -56,8 +55,6 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.nextpage().click();
     });
 
-    cy.pause();
-
     allure.step('Family member in Norway', () => {
       selectors.family_member_dob().type('01.01.1990');
       selectors.family_member_identity_number().type('01019043256');
@@ -67,8 +64,6 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.nextpage().click();
     });
 
-    cy.pause();
-
     allure.step('your current situation', () => {
       selectors.residence_permit_in_another_country().click();
       selectors.current_country().type('Afghanistan').type('{downArrow}').type('{enter}');
@@ -76,8 +71,6 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.saved().should('exist');
       selectors.nextpage().click();
     });
-
-    cy.pause();
 
     allure.step('About you', () => {
       selectors.gender().click();
@@ -88,8 +81,6 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.saved().should('exist');
       selectors.nextpage().click();
     });
-
-    cy.pause();
 
     allure.step('Passport and ID', () => {
       selectors.passport_and_id().should('exist').click();
@@ -113,9 +104,9 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.country().type('Afghanistan').type('{downArrow}').type('{enter}');
 
       //planned address in Norway
-      selectors.planned_address.postal_code().type('1263');
-      selectors.planned_address.street_name().type('Øvre Prinsdals vei').type('{downArrow}').type('{enter}');
-      selectors.house_number().type('38F').type('{downArrow}').type('{enter}');
+      selectors.planned_address.postal_code().type(norway_zipcode);
+      selectors.planned_address.street_name().type(norway_street_address).type('{downArrow}').type('{enter}');
+      selectors.house_number().type(norway_buildindNo).type('{downArrow}').type('{enter}');
 
       selectors.saved().should('exist');
       selectors.nextpage().click();
@@ -166,8 +157,6 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.saved().should('exist');
       selectors.pay_submit().should('exist').click();
     });
-
-    cy.pause();
 
     allure.step('Payment using card', () => {
       cy.origin('https://test.checkout.dibspayment.eu/', () => {
