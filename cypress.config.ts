@@ -20,8 +20,6 @@ export default defineConfig({
       allureCypress(on);
       return config;
     },
-    baseUrl: 'https://forms.int.az.udiutv.no/en/dashboard',
-    //baseUrl: 'https://test.checkout.dibspayment.eu',
   },
   watchForFileChanges: false,
   video: true,

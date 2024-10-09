@@ -8,7 +8,7 @@ variables:
     description: "Angi miljø(organa-utv, organa-test, liberty) autotest må kjøres mot."
 
 .e2e:
-  image: cypress/included:13.14.2
+  image: cypress/included:13.15.0
   stage: test
   resource_group: $CI_PROJECT_ID
   tags:
@@ -28,7 +28,7 @@ variables:
       - cypress/screenshots
 
 .pages:
-  image: cypress/included:13.14.2
+  image: cypress/included:13.15.0
   stage: pages
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

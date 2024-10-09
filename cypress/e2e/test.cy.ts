@@ -1,6 +1,7 @@
 import selectors from '../support/selectors';
 import * as allure from 'allure-cypress';
 import users from '../fixtures/users.json';
+import { faker, fakerNB_NO } from '@faker-js/faker';
 import { Utility } from '../support/utils';
 
 ///<reference types="cypress-iframe" />
@@ -13,6 +14,16 @@ describe('Sjekk bruker uten tilgang', function () {
   });
 
   it('PT-T418: Verifiser at brukere uten noen kontrollroms-roller ikke får logget inn i Kontrollrom.', { tags: ['@regression', 'PT-T418'] }, function () {
+    const self_first_name = faker.person.firstName();
+    const self_middle_name = faker.person.middleName();
+    const self_last_name = faker.person.lastName();
+    const country = faker.location.country();
+    const family_first_name = faker.person.firstName();
+    const family_middle_name = faker.person.middleName();
+    const family_last_name = faker.person.lastName();
+    const self_email = faker.internet.email();
+    const self_phone = fakerNB_NO.phone.number();
+
     selectors.myapplications().should('exist');
     selectors.family().click();
 
@@ -33,14 +44,14 @@ describe('Sjekk bruker uten tilgang', function () {
     cy.pause();
 
     allure.step('Two persons', () => {
-      selectors.self_first_and_middlename().type('Testfam');
-      selectors.self_lastname().type('Testesen');
-      selectors.self_country().type('Afghanistan').type('{downArrow}').type('{enter}');
+      selectors.self_first_and_middlename().type(self_first_name + ' ' + self_middle_name);
+      selectors.self_lastname().type(self_last_name);
+      selectors.self_country().type(country).type('{downArrow}').type('{enter}');
       selectors.checkcitizenship().click();
       selectors.familymember().type('My spouse').type('{downArrow}').type('{enter}');
-      selectors.family_member_first_and_middlename().type('Testfam');
-      selectors.family_member_lastname().type('Testesenfamily');
-      selectors.family_member_country().type('Afghanistan').type('{downArrow}').type('{enter}');
+      selectors.family_member_first_and_middlename().type(family_first_name + ' ' + family_middle_name);
+      selectors.family_member_lastname().type(family_last_name);
+      selectors.family_member_country().type(country).type('{downArrow}').type('{enter}');
       selectors.saved().should('exist');
       selectors.nextpage().click();
     });
@@ -94,8 +105,8 @@ describe('Sjekk bruker uten tilgang', function () {
     });
 
     allure.step('Contact and address', () => {
-      selectors.phone_number().type('+4740532332');
-      selectors.email().type('test@testesen.com');
+      selectors.phone_number().type(self_phone);
+      selectors.email().type(self_email);
       selectors.street_name(0).type('Hamid Karzai 1');
       selectors.postal_code(0).type('110432');
       selectors.city(0).type('Kabul');
@@ -159,32 +170,34 @@ describe('Sjekk bruker uten tilgang', function () {
     cy.pause();
 
     allure.step('Payment using card', () => {
-      //cy.origin('https://test.checkout.dibspayment.eu/', () => {
-      // cy.frameLoaded('https://test.checkout.dibspayment.eu/');
-      // cy.iframe().find('#registrationManualEmail').type('skirankumars31@gmail.com');
-      //cy.get('#nets-checkout-iframe').should('exist').its('0.contentDocument.body').should('not.be.undefined').should('be.visible').then(cy.wrap).contains('Email').should('exist');
-      cy.wait(60000);
+      cy.origin('https://test.checkout.dibspayment.eu/', () => {
+        // cy.frameLoaded('https://test.checkout.dibspayment.eu/');
+        // cy.iframe().find('#registrationManualEmail').type('skirankumars31@gmail.com');
+        //cy.get('#nets-checkout-iframe').should('exist').its('0.contentDocument.body').should('not.be.undefined').should('be.visible').then(cy.wrap).contains('Email').should('exist');
+        cy.wait(60000);
 
-      //iframe 1
-      selectors.payment.iframe().find('#registrationManualEmail', { timeout: 60000 }).type('skirankumars31@gmail.com');
-      selectors.payment.iframe().find('#registrationManualPostalCode').type('0484');
-      selectors.payment.iframe().find('#registrationManualPhoneNumber').type('40532332');
-      selectors.payment.iframe().find('#registrationManualFirstName').type('Testfam');
-      selectors.payment.iframe().find('#registrationManualLastName').type('Testesen');
-      selectors.payment.iframe().find('#registrationManualAddressLine1').type('Øvre Prinsdals Vei 38F');
+        //iframe 1
+        selectors.payment.iframe().find('#registrationManualEmail', { timeout: 60000 }).type(self_email);
+        selectors.payment.iframe().find('#registrationManualPostalCode').type('0484');
+        selectors.payment.iframe().find('#registrationManualPhoneNumber').type('40532332');
+        selectors.payment
+          .iframe()
+          .find('#registrationManualFirstName')
+          .type(self_first_name + ' ' + self_middle_name);
+        selectors.payment.iframe().find('#registrationManualLastName').type(self_last_name);
+        selectors.payment.iframe().find('#registrationManualAddressLine1').type('Øvre Prinsdals Vei 38F');
 
-      //iframe 2
-      cy.wait(10000);
-      selectors.payment.checkout_iframe1().find('#cardNumberInput').click().type('4925000000000004');
-      selectors.payment.checkout_iframe1().find('#cardExpiryInput').click().type('12/25');
-      selectors.payment.checkout_iframe1().find('#cardCvcInput').click().type('123');
-      selectors.payment.iframe().find('#btnPay').click();
+        //iframe 2
+        cy.wait(10000);
+        selectors.payment.checkout_iframe1().find('#cardNumberInput').click().type('4925000000000004');
+        selectors.payment.checkout_iframe1().find('#cardExpiryInput').click().type('12/25');
+        selectors.payment.checkout_iframe1().find('#cardCvcInput').click().type('123');
+        selectors.payment.iframe().find('#btnPay').click();
 
-      cy.wait(60000);
+        cy.wait(60000);
 
-      selectors.payment.approve_frame().find('#AuthenticationSuccessButton').click();
-
-      // });
+        selectors.payment.approve_frame().find('#AuthenticationSuccessButton').click();
+      });
     });
   });
 });

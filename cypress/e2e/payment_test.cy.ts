@@ -10,10 +10,6 @@ describe('Sjekk bruker uten tilgang', function () {
 
   beforeEach(function () {});
 
-  Cypress.on('uncaught:exception', (err, runnable) => {
-    return false;
-  });
-
   it('PT-T418: Verifiser at brukere uten noen kontrollroms-roller ikke får logget inn i Kontrollrom.', { tags: ['@regression', 'PT-T418'] }, function () {
     allure.step('Payment using card', () => {
       cy.visit('/hostedpaymentpage/?checkoutKey=195baef25de64685b916e63e876ae950&pid=78649b708345476a8c418ce08321f6b7');
@@ -35,5 +31,19 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.payment.checkout_iframe2().should('exist');
       selectors.payment.checkout_iframe3().should('exist');
     });
+  });
+
+  it.only('PT-T418: Verifiser at brukere uten noen kontrollroms-roller ikke får logget inn i Kontrollrom.', { tags: ['@regression', 'PT-T418'] }, function () {
+    cy.visit('https://test.checkout.dibspayment.eu/hostedpaymentpage/?checkoutKey=195baef25de64685b916e63e876ae950&pid=380af1ee0f904dcb8bd77958158eae99');
+
+    cy.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+
+    cy.get('iframe')
+      .its('0.contentDocument.body')
+      .within(() => {
+        cy.get('#registrationManualEmail').type('skirankumars31@gmail.com');
+      });
   });
 });
