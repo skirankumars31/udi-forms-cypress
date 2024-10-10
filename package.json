@@ -2,7 +2,7 @@
   "name": "udi-forms-cypress",
   "description": "Cypress Automation å opprette UDI søknad",
   "scripts": {
-    "cy:open:utv": "cypress open --e2e --config baseUrl=https://forms.int.az.udiutv.no/en/dashboard --browser electron"
+    "cy:open:utv": "cypress open --e2e --config baseUrl=https://forms.int.az.udiutv.no/en/dashboard --browser chrome"
   },
   "devDependencies": {
     "@cypress/grep": "4.1.0",

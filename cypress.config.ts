@@ -24,7 +24,7 @@ export default defineConfig({
   watchForFileChanges: false,
   video: true,
   viewportHeight: 1080,
-  viewportWidth: 1400,
+  viewportWidth: 1920,
   defaultCommandTimeout: 60000,
   chromeWebSecurity: false,
 });

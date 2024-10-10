@@ -6,26 +6,26 @@ import { Utility } from '../support/utils';
 
 ///<reference types="cypress-iframe" />
 
-describe('Sjekk bruker uten tilgang', function () {
+describe('UDI Søknad', function () {
   before(function () {});
 
   beforeEach(function () {
     cy.login();
   });
 
-  it('PT-T418: Verifiser at brukere uten noen kontrollroms-roller ikke får logget inn i Kontrollrom.', { tags: ['@regression', 'PT-T418'] }, function () {
+  it('UDI Familiesøknad', { tags: ['@regression'] }, function () {
     const self_first_name = faker.person.firstName();
     const self_middle_name = faker.person.middleName();
     const self_last_name = faker.person.lastName();
-    const country = faker.location.country();
+    const country = 'Afghanistan';
     const family_first_name = faker.person.firstName();
     const family_middle_name = faker.person.middleName();
     const family_last_name = faker.person.lastName();
     const self_email = faker.internet.email();
-    const self_phone = fakerNB_NO.phone.number();
-    const norway_street_address = fakerNB_NO.location.streetAddress();
-    const norway_zipcode = fakerNB_NO.location.zipCode();
-    const norway_buildindNo = fakerNB_NO.location.buildingNumber();
+    const self_phone = '+4779098431';
+    const norway_street_address = 'Gullhaugveien';
+    const norway_zipcode = '0484';
+    const norway_buildindNo = '1';
 
     selectors.myapplications().should('exist');
     selectors.family().click();
@@ -56,8 +56,8 @@ describe('Sjekk bruker uten tilgang', function () {
     });
 
     allure.step('Family member in Norway', () => {
-      selectors.family_member_dob().type('01.01.1990');
-      selectors.family_member_identity_number().type('01019043256');
+      selectors.family_member_dob().type('26.07.1996');
+      selectors.family_member_identity_number().type('26079644462');
       selectors.family_residence_permit_type().click();
       selectors.leve_sammen().click();
       selectors.saved().should('exist');
@@ -66,7 +66,7 @@ describe('Sjekk bruker uten tilgang', function () {
 
     allure.step('your current situation', () => {
       selectors.residence_permit_in_another_country().click();
-      selectors.current_country().type('Afghanistan').type('{downArrow}').type('{enter}');
+      selectors.current_country().type(country).type('{downArrow}').type('{enter}');
       selectors.who_delivers_documents().click();
       selectors.saved().should('exist');
       selectors.nextpage().click();
@@ -76,7 +76,7 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.gender().click();
       selectors.self_dob().type('01.01.1990');
       selectors.place_of_birth().type('Kabul');
-      selectors.country_of_birth().type('Afghanistan').type('{downArrow}').type('{enter}');
+      selectors.country_of_birth().type(country).type('{downArrow}').type('{enter}');
       selectors.children().click();
       selectors.saved().should('exist');
       selectors.nextpage().click();
@@ -101,7 +101,7 @@ describe('Sjekk bruker uten tilgang', function () {
       selectors.street_name(0).type('Hamid Karzai 1');
       selectors.postal_code(0).type('110432');
       selectors.city(0).type('Kabul');
-      selectors.country().type('Afghanistan').type('{downArrow}').type('{enter}');
+      selectors.country().type(country).type('{downArrow}').type('{enter}');
 
       //planned address in Norway
       selectors.planned_address.postal_code().type(norway_zipcode);
@@ -120,7 +120,7 @@ describe('Sjekk bruker uten tilgang', function () {
 
     allure.step('Education', () => {
       selectors.highest_level_of_education().type('University / University college education, 4 years or less').type('{downArrow}').type('{enter}');
-      selectors.country().type('Afghanistan').type('{downArrow}').type('{enter}');
+      selectors.country().type(country).type('{downArrow}').type('{enter}');
       selectors.completed_year_education().type('1995');
       selectors.mother_tongue().type('Arabic');
       selectors.additional_languages().click();
@@ -159,34 +159,42 @@ describe('Sjekk bruker uten tilgang', function () {
     });
 
     allure.step('Payment using card', () => {
-      cy.origin('https://test.checkout.dibspayment.eu/', () => {
-        // cy.frameLoaded('https://test.checkout.dibspayment.eu/');
-        // cy.iframe().find('#registrationManualEmail').type('skirankumars31@gmail.com');
-        //cy.get('#nets-checkout-iframe').should('exist').its('0.contentDocument.body').should('not.be.undefined').should('be.visible').then(cy.wrap).contains('Email').should('exist');
-        cy.wait(60000);
+      cy.get('iframe')
+        .its('0.contentDocument.body')
+        .within(() => {
+          cy.get('#registrationManualEmail').type('skirankumars31@gmail.com');
+          cy.get('#registrationManualPostalCode').type('0484');
+          cy.get('#registrationManualPhoneNumber').type('40532332');
+          cy.get('#registrationManualFirstName').type('Testfam');
+          cy.get('#registrationManualLastName').type('Testesen');
+          cy.get('#registrationManualAddressLine1').type('Øvre Prinsdals Vei 38F');
 
-        //iframe 1
-        selectors.payment.iframe().find('#registrationManualEmail', { timeout: 60000 }).type(self_email);
-        selectors.payment.iframe().find('#registrationManualPostalCode').type('0484');
-        selectors.payment.iframe().find('#registrationManualPhoneNumber').type('40532332');
-        selectors.payment
-          .iframe()
-          .find('#registrationManualFirstName')
-          .type(self_first_name + ' ' + self_middle_name);
-        selectors.payment.iframe().find('#registrationManualLastName').type(self_last_name);
-        selectors.payment.iframe().find('#registrationManualAddressLine1').type('Øvre Prinsdals Vei 38F');
+          cy.get('iframe')
+            .its('0.contentDocument.body')
+            .within(() => {
+              cy.get('#cardExpiryInput').click().type('12/25');
+              cy.get('#cardCvcInput').click().type('123');
+              cy.get('#cardNumberInput').click().type('4925000000000004');
+            });
 
-        //iframe 2
-        cy.wait(10000);
-        selectors.payment.checkout_iframe1().find('#cardNumberInput').click().type('4925000000000004');
-        selectors.payment.checkout_iframe1().find('#cardExpiryInput').click().type('12/25');
-        selectors.payment.checkout_iframe1().find('#cardCvcInput').click().type('123');
-        selectors.payment.iframe().find('#btnPay').click();
+          cy.get('#consentOnMerchantTerms').click();
+          cy.get('#btnPay').click();
+        });
 
-        cy.wait(60000);
+      cy.wait(15000);
 
-        selectors.payment.approve_frame().find('#AuthenticationSuccessButton').click();
-      });
+      cy.get('iframe')
+        .first()
+        .its('0.contentDocument.body')
+        .within(() => {
+          cy.get('iframe')
+            .first()
+            .its('0.contentDocument.body')
+            .within(() => {
+              cy.get('iframe').first().its('0.contentDocument.body');
+              cy.get('#AuthenticationSuccessButton').pause().click();
+            });
+        });
     });
   });
 });
