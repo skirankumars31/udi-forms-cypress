@@ -180,21 +180,6 @@ describe('UDI Søknad', function () {
           cy.get('#consentOnMerchantTerms').click();
           cy.get('#btnPay').click();
         });
-
-      cy.wait(15000);
-
-      cy.get('iframe')
-        .first()
-        .its('0.contentDocument.body')
-        .within(() => {
-          cy.get('iframe')
-            .first()
-            .its('0.contentDocument.body')
-            .within(() => {
-              cy.get('iframe').first().its('0.contentDocument.body');
-              cy.get('#AuthenticationSuccessButton').pause().click();
-            });
-        });
     });
   });
 });
