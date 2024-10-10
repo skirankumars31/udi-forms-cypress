@@ -13,7 +13,7 @@ describe('UDI Søknad', function () {
     cy.login();
   });
 
-  it('UDI Familiesøknad', { tags: ['@regression'] }, function () {
+  it('UDI Familiesøknad', function () {
     const self_first_name = faker.person.firstName();
     const self_middle_name = faker.person.middleName();
     const self_last_name = faker.person.lastName();
@@ -50,7 +50,7 @@ describe('UDI Søknad', function () {
       selectors.familymember().type('My spouse').type('{downArrow}').type('{enter}');
       selectors.family_member_first_and_middlename().type(family_first_name + ' ' + family_middle_name);
       selectors.family_member_lastname().type(family_last_name);
-      selectors.family_member_country().type(country).type('{downArrow}').type('{enter}');
+      selectors.family_member_country().type('Afghanistan').type('{downArrow}').type('{enter}');
       selectors.saved().should('exist');
       selectors.nextpage().click();
     });

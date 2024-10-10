@@ -21,6 +21,7 @@ export default defineConfig({
       return config;
     },
   },
+  experimentalStudio: true,
   watchForFileChanges: false,
   video: true,
   viewportHeight: 1080,
